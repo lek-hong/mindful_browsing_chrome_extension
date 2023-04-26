@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Test Extension Options</title>
+  </head>
+  <body>
+
+    <h1>Options Page</h1>
+
+    <div id="website-list-div">
+      <h2>Websites List</h2>
+      <ul id="websites-list"></ul>
+      <button id="add-website">Add Website</button>  
+    </div>
+
+    <div id="timer-message-options">
+      <h2>Timer and Message Options</h2>
+      Indicate how many seconds you want the timer to be:
+      <br> <input id="timer-duration" type="number" min="1" value="5">
+      <br><br> Indicate what message you want the extension to show you.
+      <br> Default is : "Take a deep breath".
+      <br> <input id="customize-message">
+
+    </div>
+
+    <div id="status"></div>
+    <button id="save">Save</button>
+
+    <script src="options.js"></script>
+  </body>
+</html>

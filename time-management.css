@@ -1,0 +1,33 @@
+#time-management-banner {
+    fill: aqua;
+    color:darkslateblue;
+    height: 100%;
+    width: 100%;
+    position:absolute;
+    top:0;
+}
+
+#timer {
+    color: red;
+    fill: aqua;
+    background: yellow;
+    height: 20%;
+    width: 100%;
+}
+
+* {
+    visibility: hidden;
+    margin:0,; padding:0;
+}
+
+.time-management * {
+    visibility:visible;
+    display:block;
+    font-size: xx-large;
+  }
+
+  .time-management-button * {
+    visibility:visible;
+    display:block;
+    font-size: xx-large;
+  }
