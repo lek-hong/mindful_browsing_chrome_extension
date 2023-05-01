@@ -6,7 +6,7 @@ import {
 // load websites from options.html
 let websites = [] // raw array taken via chrome.storage 
 let domains = [] // converted websites to domain
-const domain_proceed = {};
+const domain_proceed = {}; // dictionary to update status on domains proceed status
 
 chrome.storage.sync.get('websites', (items) => {
     websites = items.websites
@@ -15,8 +15,6 @@ chrome.storage.sync.get('websites', (items) => {
             domains[index] = getDomainWithoutSuffix(website);
         } catch {}
     })
-    console.log("Websites from options: " + websites)
-    console.log("Domains: " + domains)
 })
 
 // set domain_proceed based on website list
@@ -186,7 +184,6 @@ chrome.runtime.onMessage.addListener(
                     }
                 })
                 setTrue(getDomainWithoutSuffix(sender.tab.url), 20)
-                console.log("Set True: " + getDomainWithoutSuffix(sender.tab.url))
                 break
 
             case "exit_clicked":

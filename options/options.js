@@ -1,5 +1,4 @@
 // Add textbox with delete button
-console.log("options.js console log");
 const websitesList = document.querySelector("#websites-list");
 const addWebsiteButton = document.querySelector("#add-website");
 const saveButton = document.querySelector("#save");

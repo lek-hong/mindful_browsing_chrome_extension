@@ -2,19 +2,13 @@
 
 chrome.runtime.onMessage.addListener(
     function(request) {
-        console.log("Greeting: " + request.greeting);
-        console.log("Timer: " + request.timer);
-        console.log("Message: " + request.message);
         if (request.greeting === "begin intervention")
-            console.log("Send response from content-script.js to background.js");
 
             // try removing existing time management banner
             if (document.getElementById("time-management-banner")){ 
                 document.getElementById("time-management-banner").  textContent = '';
                 document.getElementById("time-management-banner").remove();
-                console.log("time-management-banner removed");
             }
-            else {console.log("time-management-banner not detected")}
 
             // insert all elements here to prevent repetition
             banner = document.createElement("div");
@@ -26,9 +20,7 @@ chrome.runtime.onMessage.addListener(
             // try removing existing countdown and replace to reset timer
             if (document.getElementById("time-management-timer")){ 
                 document.getElementById("time-management-timer").remove();
-                console.log("removed timer element");
             }
-            else {console.log("timer element not detected");}
 
             // set up timer
             const timer = document.createElement("div");
@@ -50,7 +42,6 @@ chrome.runtime.onMessage.addListener(
                                 elements[0].parentNode.removeChild(elements[0]);
                             }
                         }
-                        else {console.log("buttons did not need to be removed")};
                         
                         // create buttons
                         const proceed_button = document.createElement("button");
