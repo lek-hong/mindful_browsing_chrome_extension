@@ -1,86 +1,69 @@
-// content-script.js
-
 chrome.runtime.onMessage.addListener(
-    function(request) {
+    function (request) {
         if (request.greeting === "begin intervention")
 
             // try removing existing time management banner
-            if (document.getElementById("time-management-banner")){ 
-                document.getElementById("time-management-banner").  textContent = '';
-                document.getElementById("time-management-banner").remove();
+            if ($("#time-management-banner").length) {
+                $("#time-management-banner").remove();
             }
 
-            // insert all elements here to prevent repetition
-            banner = document.createElement("div");
-            banner.id = 'time-management-banner';
-            banner.className = 'time-management';
-            banner.innerHTML = "<b>" + request.message + "</b>";
-            document.body.appendChild(banner);
+        // create banner using JQuery
+        $("<div>")
+            .attr("id", "time-management-banner")
+            .addClass("time-management")
+            .html("<b>" + request.message + "</b>")
+            .appendTo("body");
 
-            // try removing existing countdown and replace to reset timer
-            if (document.getElementById("time-management-timer")){ 
-                document.getElementById("time-management-timer").remove();
-            }
+        // try removing existing countdown and replace to reset timer
+        if ($("#time-management-timer").length) {
+            $("#time-management-timer").remove();
+        }
 
-            // set up timer
-            const timer = document.createElement("div");
-            timer.className = "time-management";
-            timer.id = "time-management-timer";
-            var secondsLeft = request.timer;
-            banner.appendChild(timer);
-            
-            var downloadTimer = setInterval( 
-                () => {
-                    // when timer runs out
-                    if (secondsLeft <= 0) {
-                        clearInterval(downloadTimer);
-                        
-                        // try removing existing buttons by class
-                        if (document.getElementsByClassName("time-management-button")){ 
-                            const elements = document.getElementsByClassName("time-management-button");
-                            while(elements.length>0){
-                                elements[0].parentNode.removeChild(elements[0]);
-                            }
-                        }
-                        
-                        // create buttons
-                        const proceed_button = document.createElement("button");
-                        const exit_button = document.createElement("button");
-                        
-                        // add button text
-                        proceed_button.textContent = "Proceed";
-                        exit_button.textContent = "Exit";
-        
-                        // set button class 
-                        proceed_button.className = "time-management-button";
-                        exit_button.className = "time-management-button";
-                        
-                        // add button id 
-                        proceed_button.id = "time-management-proceed_button";
-                        exit_button.id = "time-management-exit_button";
+        // create timer using JQuery
+        $("<div>")
+            .attr("id", "time-management-timer")
+            .addClass("time-management")
+            .appendTo("#time-management-banner");
 
-                        // insert buttons
-                        banner.appendChild(proceed_button);
-                        banner.appendChild(exit_button);
+        var secondsLeft = request.timer;
 
-                        // add button actions 
-                        proceed_button.addEventListener( // proceed: send message to background.js to removeCSS
-                            "click",
-                            () => {chrome.runtime.sendMessage({greeting: "proceed_clicked"});}
-                        );
+        var downloadTimer = setInterval(
+            () => {
+                // when timer runs out
+                if (secondsLeft <= 0) {
+                    clearInterval(downloadTimer);
 
-                        exit_button.addEventListener( // exit: send message to background.js to close tab
-                            "click",
-                            () => {chrome.runtime.sendMessage({greeting: "exit_clicked"});}
-                        );
-                        
+                    // try removing existing buttons by class
+                    if ($(".time-management-button").length) {
+                        $(".time-management-button").remove();
                     }
-                    timer.textContent = secondsLeft;
-                    timer.value = secondsLeft;
-                    secondsLeft -= 1;
 
-                }, 
-                timeout=1000 
-            )
+                    // create buttons
+                    $("<button>")
+                        .attr("id", "time-management-proceed_button")
+                        .text("Proceed")
+                        .addClass("time-management-button")
+                        .on("click", function () {
+                            chrome.runtime.sendMessage({ greeting: "proceed_clicked" });
+                        })
+                        .appendTo("#time-management-banner");
+
+                    $("<button>")
+                        .attr("id", "time-management-exit_button")
+                        .text("Exit")
+                        .addClass("time-management-button")
+                        .on("click", function () {
+                            chrome.runtime.sendMessage({ greeting: "exit_clicked" });
+                        })
+                        .appendTo("#time-management-banner");
+                }
+                $("#time-management-timer").text(secondsLeft);
+                $("#time-management-timer").val(secondsLeft);
+                // timer.value = secondsLeft;
+                secondsLeft -= 1;
+
+            },
+            timeout = 1000
+        )
     }
 )
