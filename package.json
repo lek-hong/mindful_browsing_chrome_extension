@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "jquery": "^3.6.4",
     "tldts": "^6.0.3"
   }
 }
