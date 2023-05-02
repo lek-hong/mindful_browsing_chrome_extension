@@ -1,30 +1,47 @@
+// import
 import {
     getDomainWithoutSuffix,
     parse
 } from './node_modules/tldts/dist/index.esm.min.js';
 
-// load websites from options.html
-let websites = [] // raw array taken via chrome.storage 
-let domains = [] // converted websites to domain
-const domain_proceed = {}; // dictionary to update status on domains proceed status
+// functions
 
-chrome.storage.sync.get('websites', (items) => {
-    websites = items.websites
+function createDomains(websites) {
+    const domains = [];
     websites.forEach((website, index) => {
         try {
             domains[index] = getDomainWithoutSuffix(website);
-        } catch {}
+        } catch { }
     })
-})
-
-// set domain_proceed based on website list
-if (domains.length > 0) {
-    domains.forEach((domain) => {
-        domain_proceed[domain] = false
-    })
+    return domains;
 }
 
-// functions
+function createDomainProceed(domains) {
+    const domain_proceed = {};
+    if (domains.length > 0) {
+        domains.forEach((domain) => {
+            domain_proceed[domain] = false
+        })
+    }
+    return domain_proceed;
+}
+
+function updateOptions(websites, domain_proceed) {
+    const new_domains = createDomains(websites);
+    new_domains.forEach(domain => {
+        if (!domain_proceed.hasOwnProperty(domain)) {
+            domain_proceed[domain] = false;
+        }
+    });
+
+    Object.keys(domain_proceed).forEach(key => {
+        if (!new_domains.includes(key)) {
+            delete domain_proceed[key];
+        }
+    });
+    return [websites, new_domains, domain_proceed];
+}
+
 function setTrue(domain, duration) {
     domain_proceed[domain] = true;
     setTimeout(() => {
@@ -32,13 +49,10 @@ function setTrue(domain, duration) {
     }, duration * 1000);
 }
 
-// function beginIntervention(domains, domain_proceed, tab, css_filepath)
-/* domains.forEach((domain) => {
-    if (parse(tab.url).isIcann) {
-        if (getDomainWithoutSuffix(tab.url) == domain && !domain_proceed[domain]) {
-            chrome.storage.sync.get(['timer', 'message'], (items) => {
-                const timer = items.timer;
-                const message = items.message;
+function beginIntervention(domains, domain_proceed, tab, css_filepath) {
+    domains.forEach((domain) => {
+        if (parse(tab.url).isIcann) {
+            if (getDomainWithoutSuffix(tab.url) == domain && !domain_proceed[domain]) {
                 try {
                     chrome.tabs.sendMessage(tab.id, {
                         greeting: "begin intervention",
@@ -54,73 +68,59 @@ function setTrue(domain, duration) {
                         })
                     }, 3000)
                 }
-            })
 
-            try {
-                chrome.scripting.removeCSS({
-                    files: ["time-management.css"],
-                    target: {
-                        tabId: tab.id
-                    },
-                })
-            } finally {
-                chrome.scripting.insertCSS({
-                    files: ["time-management.css"],
-                    target: {
-                        tabId: tab.id
-                    },
-                })
+                try {
+                    chrome.scripting.removeCSS({
+                        files: [css_filepath],
+                        target: {
+                            tabId: tab.id
+                        },
+                    })
+                } finally {
+                    chrome.scripting.insertCSS({
+                        files: [css_filepath],
+                        target: {
+                            tabId: tab.id
+                        },
+                    })
+                }
             }
         }
-    }
-}) */
+    })
+}
 
+// initial configuration
+
+// load websites from options.html
+let websites = [] // raw array taken via chrome.storage 
+let domains = [] // converted websites to domain
+let domain_proceed = {}; // dictionary to update status on domains proceed status
+let timer = 5;
+let message = "Take a deep breath.";
+
+// configure initial values for websites, domains, domain_proceed
+chrome.storage.sync.get('websites', (items) => {
+    websites = items.websites;
+    websites.forEach((website, index) => {
+        try {
+            domains[index] = getDomainWithoutSuffix(website);
+        } catch { }
+    })
+    domain_proceed = createDomainProceed(domains);
+})
+
+// configure initial values for timer and message
+chrome.storage.sync.get(['timer', 'message'], (items) => {
+    timer = items.timer;
+    message = items.message;
+})
 
 chrome.tabs.onActivated.addListener(
     (tab) => {
         chrome.tabs.get(tab.tabId, (tab) => {
             if (tab.active) {
-                domains.forEach((domain) => {
-                    if (parse(tab.url).isIcann) {
-                        if (getDomainWithoutSuffix(tab.url) == domain && !domain_proceed[domain]) {
-                            chrome.storage.sync.get(['timer', 'message'], (items) => {
-                                const timer = items.timer;
-                                const message = items.message;
-                                try {
-                                    chrome.tabs.sendMessage(tab.id, {
-                                        greeting: "begin intervention",
-                                        message: message,
-                                        timer: timer
-                                    })
-                                } catch {
-                                    setTimeout(() => {
-                                        chrome.tabs.sendMessage(tab.id, {
-                                            greeting: "begin intervention",
-                                            message: message,
-                                            timer: timer
-                                        })
-                                    }, 3000)
-                                }
-                            })
-
-                            try {
-                                chrome.scripting.removeCSS({
-                                    files: ["time-management.css"],
-                                    target: {
-                                        tabId: tab.id
-                                    },
-                                })
-                            } finally {
-                                chrome.scripting.insertCSS({
-                                    files: ["time-management.css"],
-                                    target: {
-                                        tabId: tab.id
-                                    },
-                                })
-                            }
-                        }
-                    }
-                })
+                beginIntervention(domains, domain_proceed, tab, "time-management.css")
+                // function ends
             }
         })
     }
@@ -129,46 +129,8 @@ chrome.tabs.onActivated.addListener(
 chrome.tabs.onUpdated.addListener(
     (tabId, changeInfo, tab) => {
         if (tab.active && changeInfo.status == "complete") {
-            domains.forEach((domain) => {
-                if (parse(tab.url).isIcann) {
-                    if (getDomainWithoutSuffix(tab.url) == domain && !domain_proceed[domain]) {
-                        chrome.storage.sync.get(['timer', 'message'], (items) => {
-                            const timer = items.timer;
-                            const message = items.message;
-                            try {
-                                chrome.tabs.sendMessage(tab.id, {
-                                    greeting: "begin intervention",
-                                    message: message,
-                                    timer: timer
-                                })
-                            } catch {
-                                setTimeout(() => {
-                                    chrome.tabs.sendMessage(tab.id, {
-                                        greeting: "begin intervention",
-                                        message: message,
-                                        timer: timer
-                                    })
-                                }, 3000)
-                            }
-                        })
-                        try {
-                            chrome.scripting.removeCSS({
-                                files: ["time-management.css"],
-                                target: {
-                                    tabId: tabId
-                                }
-                            })
-                        } finally {
-                            chrome.scripting.insertCSS({
-                                files: ["time-management.css"],
-                                target: {
-                                    tabId: tabId
-                                }
-                            })
-                        }
-                    }
-                }
-            })
+            // function starts
+            beginIntervention(domains, domain_proceed, tab, "time-management.css")
         }
     }
 );
@@ -191,6 +153,11 @@ chrome.runtime.onMessage.addListener(
                     sender.tab.id
                 )
                 break
+
+            case "options_update":
+                [websites, domains, domain_proceed] = updateOptions(request.websites, domain_proceed);
+                timer = request.timer;
+                message = request.message;
         }
     }
 );
