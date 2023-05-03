@@ -34,15 +34,16 @@ chrome.runtime.onMessage.addListener(
                     clearInterval(downloadTimer);
 
                     // try removing existing buttons by class
-                    if ($(".time-management-button").length) {
-                        $(".time-management-button").remove();
+                    if ($("#time-management-proceed_button").length) {
+                        $("#time-management-proceed_button").remove();
+                        $("#time-management-exit_button").remove();
                     }
 
                     // create buttons
                     $("<button>")
                         .attr("id", "time-management-proceed_button")
                         .text("Proceed")
-                        .addClass("time-management-button")
+                        .addClass("time-management")
                         .on("click", function () {
                             chrome.runtime.sendMessage({ greeting: "proceed_clicked" });
                         })
@@ -51,9 +52,10 @@ chrome.runtime.onMessage.addListener(
                     $("<button>")
                         .attr("id", "time-management-exit_button")
                         .text("Exit")
-                        .addClass("time-management-button")
+                        .addClass("time-management")
                         .on("click", function () {
                             chrome.runtime.sendMessage({ greeting: "exit_clicked" });
+                            $('.time-management').hide();
                         })
                         .appendTo("#time-management-banner");
                 }
