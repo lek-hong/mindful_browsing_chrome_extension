@@ -46,6 +46,7 @@ chrome.runtime.onMessage.addListener(
                         .addClass("time-management")
                         .on("click", function () {
                             chrome.runtime.sendMessage({ greeting: "proceed_clicked" });
+                            $('.time-management').hide();
                         })
                         .appendTo("#time-management-banner");
 
@@ -55,7 +56,6 @@ chrome.runtime.onMessage.addListener(
                         .addClass("time-management")
                         .on("click", function () {
                             chrome.runtime.sendMessage({ greeting: "exit_clicked" });
-                            $('.time-management').hide();
                         })
                         .appendTo("#time-management-banner");
                 }
