@@ -7,14 +7,20 @@ chrome.runtime.onMessage.addListener(
                 $("#time-management-banner").remove();
             }
 
-        // create banner using JQuery
+        // add banner 
         $("<div>")
             .attr("id", "time-management-banner")
-            .addClass("time-management")
-            .html("<b>" + request.message + "</b>")
+            .addClass("container p-5 my-5 border bg-primary")
             .appendTo("body");
         
-        // hide all siblings of time-management-banner
+        // add paragraph 
+        $("<p>")
+            .attr("id", "time-management-message")
+            .addClass("h1 text-center text-bg-primary")
+            .text(request.message)
+            .appendTo("#time-management-banner")
+        
+            // hide all siblings of time-management-banner
         $('#time-management-banner').siblings().hide();
         
         // try removing existing countdown and replace to reset timer
@@ -25,7 +31,7 @@ chrome.runtime.onMessage.addListener(
         // create timer using JQuery
         $("<div>")
             .attr("id", "time-management-timer")
-            .addClass("time-management")
+            .addClass("h2 text-center text-bg-primary")
             .appendTo("#time-management-banner");
 
         var secondsLeft = request.timer;
@@ -41,31 +47,45 @@ chrome.runtime.onMessage.addListener(
                         $("#time-management-proceed_button").remove();
                         $("#time-management-exit_button").remove();
                     }
+                    // create columns
+                    $("<div>")
+                        .attr("id", "button-row")
+                        .addClass("row")
+                        .appendTo("#time-management-banner");
+
+                    $("<div>")
+                        .attr("id", "button-col1")
+                        .addClass("col p-3 text-center")
+                        .appendTo("#button-row");
+
+                    $("<div>")
+                        .attr("id", "button-col2")
+                        .addClass("col p-3 text-center")
+                        .appendTo("#button-row");
 
                     // create buttons
                     $("<button>")
-                        .attr("id", "time-management-proceed_button")
+                        .attr({id: "time-management-proceed_button", type:"button"})
                         .text("Proceed")
-                        .addClass("time-management")
+                        .addClass("h3 btn btn-primary")
                         .on("click", function () {
                             chrome.runtime.sendMessage({ greeting: "proceed_clicked" });
                             $('body *').show();
                             $('#time-management-banner').hide();
                         })
-                        .appendTo("#time-management-banner");
+                        .appendTo("#button-col1");
 
                     $("<button>")
-                        .attr("id", "time-management-exit_button")
+                        .attr({id: "time-management-exit_button", type:"button"})
                         .text("Exit")
-                        .addClass("time-management")
+                        .addClass("h3 btn btn-outline-secondary")
                         .on("click", function () {
                             chrome.runtime.sendMessage({ greeting: "exit_clicked" });
                         })
-                        .appendTo("#time-management-banner");
+                        .appendTo("#button-col2");
                 }
                 $("#time-management-timer").text(secondsLeft);
                 $("#time-management-timer").val(secondsLeft);
-                // timer.value = secondsLeft;
                 secondsLeft -= 1;
 
             },
