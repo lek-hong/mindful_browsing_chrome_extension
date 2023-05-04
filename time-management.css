@@ -1,3 +1,5 @@
+@import "./node_modules/bootstrap/dist/css/bootstrap.min.css";
+
 #time-management-banner {
     fill: aqua;
     color:darkslateblue;
@@ -15,7 +17,7 @@
     width: 100%;
 }
 
-* {
+/* * {
     visibility: hidden;
     margin:0,; padding:0;
 }
@@ -24,10 +26,4 @@
     visibility:visible;
     display:block;
     font-size: xx-large;
-  }
-
-  .time-management-button * {
-    visibility:visible;
-    display:block;
-    font-size: xx-large;
-  }
+  } */

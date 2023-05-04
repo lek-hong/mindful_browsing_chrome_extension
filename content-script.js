@@ -13,7 +13,10 @@ chrome.runtime.onMessage.addListener(
             .addClass("time-management")
             .html("<b>" + request.message + "</b>")
             .appendTo("body");
-
+        
+        // hide all siblings of time-management-banner
+        $('#time-management-banner').siblings().hide();
+        
         // try removing existing countdown and replace to reset timer
         if ($("#time-management-timer").length) {
             $("#time-management-timer").remove();
@@ -46,7 +49,8 @@ chrome.runtime.onMessage.addListener(
                         .addClass("time-management")
                         .on("click", function () {
                             chrome.runtime.sendMessage({ greeting: "proceed_clicked" });
-                            $('.time-management').hide();
+                            $('body *').show();
+                            $('#time-management-banner').hide();
                         })
                         .appendTo("#time-management-banner");
 
