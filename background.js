@@ -119,8 +119,8 @@ chrome.tabs.onActivated.addListener(
     (tab) => {
         chrome.tabs.get(tab.tabId, (tab) => {
             if (tab.active) {
-                beginIntervention(domains, domain_proceed, tab, "time-management.css")
-                // function ends
+                beginIntervention(domains, domain_proceed, tab, "intervention/time-management.css")
+                console.log("onActivated intervention start");
             }
         })
     }
@@ -130,7 +130,8 @@ chrome.tabs.onUpdated.addListener(
     (tabId, changeInfo, tab) => {
         if (tab.active && changeInfo.status == "complete") {
             // function starts
-            beginIntervention(domains, domain_proceed, tab, "time-management.css")
+            beginIntervention(domains, domain_proceed, tab, "intervention/time-management.css")
+            console.log("onUpdated intervention start");
         }
     }
 );
@@ -140,7 +141,7 @@ chrome.runtime.onMessage.addListener(
         switch (request.greeting) {
             case "proceed_clicked":
                 chrome.scripting.removeCSS({
-                    files: ["time-management.css"],
+                    files: ["intervention/time-management.css"],
                     target: {
                         tabId: sender.tab.id
                     }

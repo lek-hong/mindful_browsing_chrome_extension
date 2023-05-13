@@ -11,7 +11,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["node_modules/jquery/dist/jquery.min.js", "node_modules/bootstrap/dist/js/bootstrap.min.js", "content-script.js"],
+      "js": ["node_modules/jquery/dist/jquery.min.js", "node_modules/bootstrap/dist/js/bootstrap.min.js", "intervention/content-script.js"],
       "css": ["node_modules/bootstrap/dist/css/bootstrap.min.css"],
       "run_at": "document_start"
     }
@@ -20,5 +20,11 @@
     "page": "options/options.html",
     "open_in_tab": false
   },
-  "host_permissions": ["<all_urls>"]
+  "host_permissions": ["<all_urls>"],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "intervention/intervention.html" ],
+      "matches": [ "<all_urls>"] 
+    }]
 }
