@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener(
 					}
 				});
 
-			}, 10)
+			}, 100)
 
 
 			$('#intervention-iframe').siblings().hide();

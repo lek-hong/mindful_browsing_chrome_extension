@@ -9,6 +9,13 @@ chrome.runtime.onMessage.addListener(
                 $("#time-management-timer-value").remove();
             }
 
+            // try removing existing buttons by class
+            if ($("#time-management-proceed_button").length) {
+                $("#time-management-proceed_button").remove();
+                $("#time-management-exit_button").remove();
+            }
+            
+
             // create timer using JQuery
             $("<div>")
                 .attr("id", "time-management-timer-value")
@@ -22,13 +29,12 @@ chrome.runtime.onMessage.addListener(
                     // when timer runs out
                     if (secondsLeft <= 0) {
                         clearInterval(timer);
-
+                        
                         // try removing existing buttons by class
                         if ($("#time-management-proceed_button").length) {
                             $("#time-management-proceed_button").remove();
                             $("#time-management-exit_button").remove();
-                        }
-
+            
                         // create buttons
                         $("<button>")
                             .attr({ id: "time-management-proceed_button", type: "button" })
