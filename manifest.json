@@ -23,8 +23,7 @@
   "host_permissions": ["<all_urls>"],
   "web_accessible_resources": [
     {
-      "resources": [
-        "intervention/intervention.html" ],
-      "matches": [ "<all_urls>"] 
+      "resources": ["node_modules/bootstrap/dist/css/bootstrap.min.css", "node_modules/bootstrap/dist/js/bootstrap.min.js"],
+      "matches": ["http://*/*", "https://*/*"]
     }]
 }

@@ -49,7 +49,7 @@ function setTrue(domain, duration) {
     }, duration * 1000);
 }
 
-function beginIntervention(domains, domain_proceed, tab, css_filepath) {
+function beginIntervention(domains, domain_proceed, tab) {
     domains.forEach((domain) => {
         if (parse(tab.url).isIcann) {
             if (getDomainWithoutSuffix(tab.url) == domain && !domain_proceed[domain]) {
@@ -69,21 +69,21 @@ function beginIntervention(domains, domain_proceed, tab, css_filepath) {
                     }, 3000)
                 }
 
-                try {
-                    chrome.scripting.removeCSS({
-                        files: [css_filepath],
-                        target: {
-                            tabId: tab.id
-                        },
-                    })
-                } finally {
-                    chrome.scripting.insertCSS({
-                        files: [css_filepath],
-                        target: {
-                            tabId: tab.id
-                        },
-                    })
-                }
+                // try {
+                //     chrome.scripting.removeCSS({
+                //         files: [css_filepath],
+                //         target: {
+                //             tabId: tab.id
+                //         },
+                //     })
+                // } finally {
+                //     chrome.scripting.insertCSS({
+                //         files: [css_filepath],
+                //         target: {
+                //             tabId: tab.id
+                //         },
+                //     })
+                // }
             }
         }
     })
@@ -115,12 +115,17 @@ chrome.storage.sync.get(['timer', 'message'], (items) => {
     message = items.message;
 })
 
+// onActivated and onUpdated event listeners
 chrome.tabs.onActivated.addListener(
     (tab) => {
         chrome.tabs.get(tab.tabId, (tab) => {
             if (tab.active) {
+<<<<<<< HEAD
                 beginIntervention(domains, domain_proceed, tab, "intervention/time-management.css")
                 console.log("onActivated intervention start");
+=======
+                beginIntervention(domains, domain_proceed, tab)
+>>>>>>> contentscript_only
             }
         })
     }
@@ -130,8 +135,11 @@ chrome.tabs.onUpdated.addListener(
     (tabId, changeInfo, tab) => {
         if (tab.active && changeInfo.status == "complete") {
             // function starts
-            beginIntervention(domains, domain_proceed, tab, "intervention/time-management.css")
-            console.log("onUpdated intervention start");
+<<<<<<< HEAD
+
+=======
+            beginIntervention(domains, domain_proceed, tab)
+>>>>>>> contentscript_only
         }
     }
 );
@@ -140,12 +148,15 @@ chrome.runtime.onMessage.addListener(
     function (request, sender) {
         switch (request.greeting) {
             case "proceed_clicked":
+<<<<<<< HEAD
                 chrome.scripting.removeCSS({
                     files: ["intervention/time-management.css"],
                     target: {
                         tabId: sender.tab.id
                     }
                 })
+=======
+>>>>>>> contentscript_only
                 setTrue(getDomainWithoutSuffix(sender.tab.url), 20)
                 break
 
