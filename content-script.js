@@ -92,7 +92,6 @@ chrome.runtime.onMessage.addListener(
                         .text("Proceed")
                         .addClass("h3 btn btn-danger")
                         .on("click", function () {
-                            // $('.time-management-hidden').show();
                             $("#shadow-host").siblings().css({"visibility": "visible"});
                             $("#shadow-host").css({"visibility": "hidden"});
                             $("html, body").css("overflow", "visible");

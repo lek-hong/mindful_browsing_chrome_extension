@@ -1,33 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>My Test Extension Options</title>
-  </head>
-  <body>
 
-    <h1>Options Page</h1>
+<head>
+	<title>My Test Extension Options</title>
+	<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+	<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
 
-    <div id="website-list-div">
-      <h2>Websites List</h2>
-      <ul id="websites-list"></ul>
-      <button id="add-website">Add Website</button>  
-    </div>
+<body>
+	<div class="container-fluid p-5 border bg-primary">
+		<p class="h1 text-bg-primary">Options Page</p>
+		<br>
+		<div id="website-list-div">
+			<p class="h2 text-bg-primary">Websites List</p>
+			<ul id="websites-list" class="list-group"></ul>
+			<br>
+			<button id="add-website">Add Website</button>
+			<br><br>
+		</div>
 
-    <div id="timer-message-options">
-      <h2>Timers and Message Options</h2>
-      Indicate how many seconds you want the timer to be:
-      <br> <input id="timer-duration" type="number" min="1" value="5">
-      <br><br>Indicate how many seconds you want before you see the intervention again:
-      <br> <input id="proceed-duration" type="number" min="1" value="20">
-      <br><br> Indicate what message you want the extension to show you.
-      <br> Default is : "Take a deep breath".
-      <br> <input id="customize-message">
+		<div id="timer-message-options">
+			<p class="h2 text-bg-primary">Timers and Message Options</p>
+			<p class="text-bg-primary">Indicate how many seconds you want the timer to be:</p>
+			<input id="timer-duration" type="number" min="1" value="5">
+			<br><br>
+			<p class="text-bg-primary">Indicate how many seconds you want before you see the intervention again:</p>
+			<input id="proceed-duration" type="number" min="1" value="20">
+			<br><br>
+			<p class="text-bg-primary"> Indicate what message you want the extension to show you. Default is : "Take a
+				deep breath".</p>
+			<input id="customize-message">
 
-    </div>
+		</div>
+		<br>
+		<div id="status"></div>
+		<button id="save">Save</button>
 
-    <div id="status"></div>
-    <button id="save">Save</button>
+		<script src="options.js"></script>
 
-    <script src="options.js"></script>
-  </body>
+	</div>
+</body>
+
 </html>
