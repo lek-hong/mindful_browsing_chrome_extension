@@ -117,5 +117,65 @@ chrome.runtime.onMessage.addListener(
             },
             timeout = 1000
         )
+		// STYLE CODE
+		$("#shadow-host").css({
+			"z-index": "9999",
+			"position": "fixed",
+			"top": "0",
+			"left": "0",
+			"width": "100%",
+			"height": "100%",
+			"background-color": "rgba(0, 0, 0, 0.5)"
+		  });
+		
+		  $("#time-management-banner").css({
+			"position": "absolute",
+			"top": "50%",
+			"left": "50%",
+			"transform": "translate(-50%, -50%)",
+			"z-index": "10000",
+			"background-color": "#ffffff",
+			"padding": "10px",
+			"border-radius": "5px"
+		  });
+		
+		  $("#time-management-message").css({
+			"font-size": "24px",
+			"text-align": "center"
+		  });
+		
+		  $("#time-management-timer").css({
+			"font-size": "36px",
+			"text-align": "center"
+		  });
+		
+		  $("#button-row").css({
+			"display": "flex",
+			"justify-content": "center",
+			"margin-top": "20px"
+		  });
+		
+		  $("#button-col1, #button-col2").css({
+			"flex": "1",
+			"margin": "0 10px"
+		  });
+		
+		  $("#time-management-proceed_button, #time-management-exit_button").css({
+			"width": "100%",
+			"font-size": "24px",
+			"padding": "10px",
+			"border-radius": "5px",
+			"cursor": "pointer"
+		  });
+		
+		  $("#time-management-proceed_button").css({
+			"background-color": "#f44336",
+			"color": "#ffffff"
+		  });
+		
+		  $("#time-management-exit_button").css({
+			"background-color": "#4caf50",
+			"color": "#ffffff"
+		  });
     }
 )

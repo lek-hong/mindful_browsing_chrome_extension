@@ -121,7 +121,6 @@ chrome.tabs.onActivated.addListener(
         chrome.tabs.get(tab.tabId, (tab) => {
             if (tab.active) {
                 beginIntervention(domains, domain_proceed, tab)
-                // function ends
             }
         })
     }
@@ -140,19 +139,11 @@ chrome.runtime.onMessage.addListener(
     function (request, sender) {
         switch (request.greeting) {
             case "proceed_clicked":
-                // chrome.scripting.removeCSS({
-                //     files: ["time-management.css"],
-                //     target: {
-                //         tabId: sender.tab.id
-                //     }
-                // })
                 setTrue(getDomainWithoutSuffix(sender.tab.url), 20)
                 break
 
             case "exit_clicked":
-                chrome.tabs.remove(
-                    sender.tab.id
-                )
+                chrome.tabs.remove(sender.tab.id)
                 break
 
             case "options_update":
