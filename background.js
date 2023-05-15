@@ -68,22 +68,6 @@ function beginIntervention(domains, domain_proceed, tab) {
                         })
                     }, 3000)
                 }
-
-                // try {
-                //     chrome.scripting.removeCSS({
-                //         files: [css_filepath],
-                //         target: {
-                //             tabId: tab.id
-                //         },
-                //     })
-                // } finally {
-                //     chrome.scripting.insertCSS({
-                //         files: [css_filepath],
-                //         target: {
-                //             tabId: tab.id
-                //         },
-                //     })
-                // }
             }
         }
     })
@@ -115,7 +99,7 @@ chrome.storage.sync.get(['timer', 'message'], (items) => {
     message = items.message;
 })
 
-// onActivated and onUpdated event listeners
+// onActivated, onUpdated and onFocusChanged event listeners
 chrome.tabs.onActivated.addListener(
     (tab) => {
         chrome.tabs.get(tab.tabId, (tab) => {
@@ -142,6 +126,17 @@ chrome.tabs.onUpdated.addListener(
         }
     }
 );
+
+chrome.windows.onFocusChanged.addListener(function(windowId) {
+    if (windowId !== chrome.windows.WINDOW_ID_NONE) {
+      chrome.tabs.query({ active: true, windowId: windowId }, function(tabs) {
+        if (tabs && tabs.length > 0) {
+          var activeTab = tabs[0];
+          beginIntervention(domains, domain_proceed, activeTab);
+        }
+      });
+    }
+  });  
 
 chrome.runtime.onMessage.addListener(
     function (request, sender) {
