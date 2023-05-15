@@ -104,10 +104,6 @@ chrome.tabs.onActivated.addListener(
     (tab) => {
         chrome.tabs.get(tab.tabId, (tab) => {
             if (tab.active) {
-<<<<<<< HEAD
-                beginIntervention(domains, domain_proceed, tab, "intervention/time-management.css")
-                console.log("onActivated intervention start");
-=======
                 beginIntervention(domains, domain_proceed, tab)
             }
         })
@@ -117,12 +113,7 @@ chrome.tabs.onActivated.addListener(
 chrome.tabs.onUpdated.addListener(
     (tabId, changeInfo, tab) => {
         if (tab.active && changeInfo.status == "complete") {
-            // function starts
-<<<<<<< HEAD
-
-=======
             beginIntervention(domains, domain_proceed, tab)
->>>>>>> contentscript_only
         }
     }
 );
