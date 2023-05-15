@@ -80,6 +80,7 @@ let websites = [] // raw array taken via chrome.storage
 let domains = [] // converted websites to domain
 let domain_proceed = {}; // dictionary to update status on domains proceed status
 let timer = 5;
+let proceed_timer = 20;
 let message = "Take a deep breath.";
 
 // configure initial values for websites, domains, domain_proceed
@@ -94,8 +95,9 @@ chrome.storage.sync.get('websites', (items) => {
 })
 
 // configure initial values for timer and message
-chrome.storage.sync.get(['timer', 'message'], (items) => {
+chrome.storage.sync.get(['timer', 'proceed_timer', 'message'], (items) => {
     timer = items.timer;
+    proceed_timer = items.proceed_timer;
     message = items.message;
 })
 
@@ -133,7 +135,7 @@ chrome.runtime.onMessage.addListener(
     function (request, sender) {
         switch (request.greeting) {
             case "proceed_clicked":
-                setTrue(getDomainWithoutSuffix(sender.tab.url), 20)
+                setTrue(getDomainWithoutSuffix(sender.tab.url), proceed_timer)
                 break
 
             case "exit_clicked":
