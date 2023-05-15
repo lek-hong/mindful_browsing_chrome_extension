@@ -43,7 +43,8 @@ chrome.runtime.onMessage.addListener(
             .appendTo(shadow.querySelector("#time-management-banner"));
         
         // hide certain elements on the page
-        $('#shadow-host').siblings().hide();
+        $("#shadow-host").siblings().css({"visibility": "hidden"});
+        $("html, body").css("overflow", "hidden");
 
         // try removing existing countdown and replace to reset timer
         if (shadow.querySelector("#time-management-timer")) {
@@ -92,8 +93,9 @@ chrome.runtime.onMessage.addListener(
                         .addClass("h3 btn btn-danger")
                         .on("click", function () {
                             // $('.time-management-hidden').show();
-                            $('body *').show();
-                            $('#shadow-host').remove();
+                            $("#shadow-host").siblings().css({"visibility": "visible"});
+                            $("#shadow-host").css({"visibility": "hidden"});
+                            $("html, body").css("overflow", "visible");
                             chrome.runtime.sendMessage({ greeting: "proceed_clicked" });
                         })
                         .appendTo(shadow.querySelector("#button-col1"));
