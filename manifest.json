@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "time_management_v2_options",
-  "version": "2.0.1",
-  "description": "X second pause before YouTube",
+  "name": "time_management",
+  "version": "2.1",
+  "description": "Pause a few seconds before visiting a distracting website",
   "permissions": ["tabs", "scripting", "activeTab", "storage"],
   "background": {
     "service_worker": "background.js",

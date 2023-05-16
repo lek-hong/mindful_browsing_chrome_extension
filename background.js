@@ -1,11 +1,11 @@
-// import
+// import modules
 import {
     getDomainWithoutSuffix,
     parse
 } from './node_modules/tldts/dist/index.esm.min.js';
 
 // functions
-
+// creates domains from website array
 function createDomains(websites) {
     const domains = [];
     websites.forEach((website, index) => {
@@ -16,6 +16,7 @@ function createDomains(websites) {
     return domains;
 }
 
+// creates an object storing status of intervention (if the user clicked on proceed)
 function createDomainProceed(domains) {
     const domain_proceed = {};
     if (domains.length > 0) {
@@ -26,6 +27,7 @@ function createDomainProceed(domains) {
     return domain_proceed;
 }
 
+// updates website array and domain_proceed object based on user options
 function updateOptions(websites, domain_proceed) {
     const new_domains = createDomains(websites);
     new_domains.forEach(domain => {
@@ -42,6 +44,7 @@ function updateOptions(websites, domain_proceed) {
     return [websites, new_domains, domain_proceed];
 }
 
+// sets domain within domain_proceed object to true for a duration if proceed button is clicked
 function setTrue(domain, duration) {
     domain_proceed[domain] = true;
     setTimeout(() => {
@@ -49,6 +52,7 @@ function setTrue(domain, duration) {
     }, duration * 1000);
 }
 
+// checks if tab URL falls in specified domain and sends info to content script to begin interventino
 function beginIntervention(domains, domain_proceed, tab) {
     domains.forEach((domain) => {
         if (parse(tab.url).isIcann) {
@@ -73,9 +77,6 @@ function beginIntervention(domains, domain_proceed, tab) {
     })
 }
 
-// initial configuration
-
-// load websites from options.html
 let websites = [] // raw array taken via chrome.storage 
 let domains = [] // converted websites to domain
 let domain_proceed = {}; // dictionary to update status on domains proceed status
@@ -83,25 +84,25 @@ let timer = 5;
 let proceed_timer = 20;
 let message = "Take a deep breath.";
 
-// configure initial values for websites, domains, domain_proceed
+// get initial values for websites, domains, domain_proceed from options
 chrome.storage.sync.get('websites', (items) => {
     websites = items.websites;
     websites.forEach((website, index) => {
         try {
             domains[index] = getDomainWithoutSuffix(website);
-        } catch { }
+        } catch { console.log("Invalid URL, to be ignored") } // ideally this should be checked in options.js; possible future iteration
     })
     domain_proceed = createDomainProceed(domains);
 })
 
-// configure initial values for timer and message
+// configure initial values for timer, proceed_timer and message
 chrome.storage.sync.get(['timer', 'proceed_timer', 'message'], (items) => {
     timer = items.timer;
     proceed_timer = items.proceed_timer;
     message = items.message;
 })
 
-// onActivated, onUpdated and onFocusChanged event listeners
+// onActivated, onUpdated and onFocusChanged event listeners to detect when to commence intervention
 chrome.tabs.onActivated.addListener(
     (tab) => {
         chrome.tabs.get(tab.tabId, (tab) => {
@@ -120,17 +121,18 @@ chrome.tabs.onUpdated.addListener(
     }
 );
 
-chrome.windows.onFocusChanged.addListener(function(windowId) {
+chrome.windows.onFocusChanged.addListener(function (windowId) {
     if (windowId !== chrome.windows.WINDOW_ID_NONE) {
-      chrome.tabs.query({ active: true, windowId: windowId }, function(tabs) {
-        if (tabs && tabs.length > 0) {
-          var activeTab = tabs[0];
-          beginIntervention(domains, domain_proceed, activeTab);
-        }
-      });
+        chrome.tabs.query({ active: true, windowId: windowId }, function (tabs) {
+            if (tabs && tabs.length > 0) {
+                var activeTab = tabs[0];
+                beginIntervention(domains, domain_proceed, activeTab);
+            }
+        });
     }
-  });  
+});
 
+// check for incoming messages from content script and options
 chrome.runtime.onMessage.addListener(
     function (request, sender) {
         switch (request.greeting) {
