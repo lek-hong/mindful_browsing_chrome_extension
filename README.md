@@ -3,7 +3,7 @@
 This is a simple Chrome extension. When you go to a website stipulated in the options menu, you will be greeted with an intervention, designed to help you be more mindful of your web browsing habits.
 ## How to install
 1. Clone this repository.
-2. Use `npm install` in the project directory to install the node packages.
+  2. Use `npm install` in the project directory to install the node packages. The packages are [tldts](https://www.npmjs.com/package/tldts), [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/) and [JQuery](https://jquery.com/).
 3. Follow the instructions [here](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#:~:text=To%20load%20an%20unpacked%20extension,the%20bottom%20of%20the%20menu.) to load the extension in Google Chrome.
 ## How to use
 1. Click on the installed extension beside your address bar and head over to options.
