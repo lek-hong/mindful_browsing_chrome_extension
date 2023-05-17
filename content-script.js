@@ -1,3 +1,4 @@
+'use strict';
 // only begin intervention if message is received from background
 chrome.runtime.onMessage.addListener(
     function (request) {
@@ -61,6 +62,7 @@ chrome.runtime.onMessage.addListener(
             .appendTo(shadow.querySelector("#time-management-banner"));
 
         var secondsLeft = request.timer;
+        const timeout = 1000; // Timeout value in milliseconds
 
         var timer = setInterval(
             () => {
@@ -112,7 +114,7 @@ chrome.runtime.onMessage.addListener(
                 secondsLeft -= 1;
 
             },
-            timeout = 1000
+            timeout
         )
     }
 )

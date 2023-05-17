@@ -1,4 +1,5 @@
 // import modules
+'use strict';
 import {
     getDomainWithoutSuffix,
     parse
@@ -87,12 +88,16 @@ let message = "Take a deep breath.";
 // get initial values for websites, domains, domain_proceed from options
 chrome.storage.sync.get('websites', (items) => {
     websites = items.websites;
-    websites.forEach((website, index) => {
-        try {
-            domains[index] = getDomainWithoutSuffix(website);
-        } catch { console.log("Invalid URL, to be ignored") } // ideally this should be checked in options.js; possible future iteration
-    })
-    domain_proceed = createDomainProceed(domains);
+    if (Array.isArray(websites)) {
+        websites.forEach((website, index) => {
+            try {
+                domains[index] = getDomainWithoutSuffix(website);
+            } catch { console.log("Invalid URL, to be ignored") } // ideally this should be checked in options.js; possible future iteration
+        })
+        domain_proceed = createDomainProceed(domains);    
+    } else {
+        console.log("No websites stored.")
+    }
 })
 
 // configure initial values for timer, proceed_timer and message
