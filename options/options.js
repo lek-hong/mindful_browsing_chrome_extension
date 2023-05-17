@@ -1,3 +1,4 @@
+'use strict';
 // retrieve elements 
 const websitesList = $("#websites-list");
 const addWebsiteButton = $("#add-website");
