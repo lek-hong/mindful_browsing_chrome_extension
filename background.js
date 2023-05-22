@@ -1,5 +1,10 @@
 // import modules
 'use strict';
+
+chrome.runtime.onInstalled.addListener(
+    chrome.runtime.openOptionsPage()
+  )
+
 import {
     getDomainWithoutSuffix,
     parse

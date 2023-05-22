@@ -74,7 +74,7 @@ saveButton.on("click", function () {
 		{ websites: websites, timer: timerInput, proceed_timer: proceedTimerInput, message: messageInput }, () => {
 			// Update status to let user know options were saved.
 			const status = $('#status');
-			status.text('Options saved.');
+			status.text('Options saved!');
 			setTimeout(() => {
 				status.text('');
 			}, 1000);
