@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "time_management",
+  "name": "mindful_browsing",
   "version": "1.0",
   "description": "Pause a few seconds before visiting a distracting website",
   "permissions": ["tabs", "scripting", "activeTab", "storage"],
