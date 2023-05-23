@@ -1,4 +1,4 @@
-# time_management_v2
+# mindful_browsing_chrome_extension
 ## Description
 This is a simple Chrome extension. When you go to a website stipulated in the options menu, you will be greeted with an intervention, designed to help you be more mindful of your web browsing habits.
 ## How to install
